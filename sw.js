@@ -1,0 +1,5 @@
+const VERSION="gym-pro-v26-20260916";
+const APP=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png"];
+self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(VERSION).then(c=>c.addAll(APP)))});
+self.addEventListener("activate",e=>e.waitUntil((async()=>{for(const k of await caches.keys())if(k!==VERSION)await caches.delete(k);await self.clients.claim()})()));
+self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;const u=new URL(e.request.url);if(e.request.mode==="navigate"||u.origin===location.origin){e.respondWith((async()=>{try{const r=await fetch(e.request,{cache:"no-store"});if(r&&r.ok){const c=await caches.open(VERSION);c.put(e.request,r.clone())}return r}catch(_){return (await caches.match(e.request))||(await caches.match("./index.html"))}})());return;}if(e.request.destination==="image"){e.respondWith((async()=>{const hit=await caches.match(e.request);if(hit)return hit;try{const r=await fetch(e.request);if(r&&r.ok){const c=await caches.open(VERSION);c.put(e.request,r.clone())}return r}catch(_){return new Response("",{status:504})}})())}});

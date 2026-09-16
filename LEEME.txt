@@ -1,0 +1,19 @@
+GYM PRO PWA v26
+
+Archivos que deben publicarse juntos en la raíz del sitio:
+- index.html
+- manifest.webmanifest
+- sw.js
+- icon-192.png
+- icon-512.png
+
+Los datos de entrenamiento NO están dentro de estos archivos. Se siguen sincronizando mediante el Apps Script dedicado de GYM PRO y GYM_PRO_SYNC.json.
+
+Primera instalación en cada dispositivo:
+1. Abrir la URL HTTPS de la web.
+2. En Ajustes, pegar la misma URL /exec del Apps Script de GYM PRO.
+3. Pulsar Sincronizar ahora y comprobar el historial.
+4. Instalar/Añadir a pantalla de inicio.
+
+Actualizaciones posteriores:
+Reemplazar estos archivos en el alojamiento conservando la misma URL. El service worker comprueba versiones nuevas y mantiene una copia offline. Los entrenamientos se guardan primero en local y se sincronizan al volver la conexión.
