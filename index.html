@@ -46,6 +46,7 @@
 .syncstatus.ok{background:#eefaf4;border-color:#91d7b8;color:#176a4a}
 .syncstatus.warn{background:#fff7e8;border-color:#efcb75;color:#76520a}
 .syncstatus.err{background:#fff0f2;border-color:#efa5af;color:#a92337}
+.analysis-panel{border:1px solid #dce5ee;background:#fbfdff}.analysis-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.analysis-note{margin-top:10px;padding:10px 12px;border-radius:9px;background:#eef7ff;color:#36516d;font-size:12px}.analysis-note b{color:#173a5e}@media(max-width:700px){.analysis-actions button{width:100%}}
 @media(max-width:700px){.syncgrid{grid-template-columns:1fr}.synccheck{padding:0}}
 
 .bandref{margin-top:8px;padding:8px 10px;background:#f3f8ff;border:1px solid #cfe2f6;border-radius:9px;font-size:11px;color:#315b84}
@@ -70,10 +71,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" href="GYM_PRO.ico" sizes="any">
-<link rel="apple-touch-icon" href="icon-192.png">
 </head><body>
-<div class="appbar"><div class="barin"><div class="brand"><div class="brandmark">🏋️</div><div><b>GYM <span>PRO</span></b><small>TU ENTRENAMIENTO, PASO A PASO</small></div></div><div class="nav"><button class="on" data-tab="train">🏋️ Entrenar</button><button data-tab="calendar">🗓 Calendario</button><button data-tab="history">📊 Historial</button><button data-tab="library">📖 Ejercicios</button><button data-tab="settings">⚙ Ajustes</button></div><div class="status">Datos locales</div></div></div>
+<div class="appbar"><div class="barin"><div class="brand"><div class="brandmark">🏋️</div><div><b>GYM <span>PRO</span></b><small>TU ENTRENAMIENTO, PASO A PASO · v27</small></div></div><div class="nav"><button class="on" data-tab="train">🏋️ Entrenar</button><button data-tab="calendar">🗓 Calendario</button><button data-tab="history">📊 Historial</button><button data-tab="library">📖 Ejercicios</button><button data-tab="settings">⚙ Ajustes</button></div><div class="status">Datos locales</div></div></div>
 <main class="wrap">
 <section id="train"><div class="topcard"><div class="homebadge">🏠</div><div><h2 id="topTitle">Entrenamiento en casa</h2><div class="sub" id="phaseText"></div></div><div class="progressbox"><div class="progressrow"><span>Progreso de la sesión</span><b id="progressText">0 / 11 ejercicios</b></div><div class="track"><i id="progressBar"></i></div></div><button class="primary" id="startBtn">▶ INICIAR</button></div><div id="session" class="session hidden"><div id="exerciseList"></div><div class="card note"><b>Notas de la sesión</b><textarea id="notes" placeholder="Cómo te has sentido, molestias, observaciones..."></textarea></div><div class="actions"><button class="secondary" id="saveDraft">Guardar y salir</button><button class="primary" id="finish">✓ Finalizar entrenamiento</button></div></div></section>
 <section id="calendar" class="hidden"><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center"><button class="ghost" id="prevM">◀</button><h2 id="monthTitle"></h2><button class="ghost" id="nextM">▶</button></div><div id="cal" class="calendar"></div></div></section>
@@ -88,6 +87,15 @@
       <select id="progressExercise"></select>
     </div>
     <div id="exerciseProgress"></div>
+  </div>
+  <div class="panel analysis-panel">
+    <h2 style="margin-top:0">🤖 Análisis y progreso</h2>
+    <div class="zone">Consulta aquí tu evolución y prepara una copia compacta para que ChatGPT pueda analizar tus entrenamientos reales.</div>
+    <div class="analysis-actions">
+      <button class="primary" id="exportChatGPT">Exportar para ChatGPT</button>
+      <button class="secondary" id="exportSummary">Exportar resumen legible</button>
+    </div>
+    <div class="analysis-note"><b>Privacidad:</b> estos botones solo generan un archivo en tu dispositivo. No publican tu historial ni dan acceso permanente a terceros.</div>
   </div>
   <div class="panel">
     <h2 style="margin-top:0">Sesiones guardadas</h2>
@@ -484,7 +492,7 @@ function initSyncUI(){
  auto.onchange=()=>{syncCfg.auto=auto.checked;saveSyncCfg();syncSetStatus(syncCfg.auto?'Sincronización automática activada.':'Sincronización automática desactivada.','ok')};
  $('#testSync').onclick=async()=>{syncCfg.url=normalizeSyncUrl(url.value);saveSyncCfg();syncSetStatus('Probando conexión…');try{let r=await cloudRead();syncSetStatus(r?'✓ Conexión correcta. Ya existe una copia en Drive.':'✓ Conexión correcta. Drive preparado; todavía no hay copia.','ok')}catch(e){syncSetStatus('⚠ '+e.message,'err')}};
  $('#syncNow').onclick=()=>{syncCfg.url=normalizeSyncUrl(url.value);saveSyncCfg();syncNow(true)};
- if(syncConfigured()){syncSetStatus(syncCfg.lastSyncedAt?'Drive configurado · última sincronización '+new Date(syncCfg.lastSyncedAt).toLocaleString('es-ES'):'Drive configurado · pendiente de primera sincronización.');setTimeout(()=>syncNow(false),700)}
+ if(syncConfigured()){syncSetStatus(syncCfg.lastSyncedAt?'Drive configurado · última sincronización '+new Date(syncCfg.lastSyncedAt).toLocaleString('es-ES'):'Drive configurado · pendiente de primera sincronización.');setTimeout(()=>syncNow(false),2500)}
 }
 
 function completedSessions(){return db.sessions.filter(s=>!s.draft)}
@@ -622,13 +630,26 @@ $('#mode').onchange=e=>{
   renderLibrary();
 };
 $('#resetProgress').onclick=()=>{if(!confirm('¿Borrar TODO el progreso de entrenamiento y volver a Semana 1 · sesión 1?'))return;if(!confirm('Confirmación final: se borrarán historial, calendario, borradores, cargas, repeticiones, sensaciones, molestias y notas.'))return;db.sessions=[];db.gymRotation={};active=null;save();$('#session').classList.add('hidden');$('#startBtn').classList.remove('hidden');$('#notes').value='';refreshTop();renderCal();renderHistory();alert('Progreso reiniciado. Ya estás en Semana 1 · sesión 1.');};
+function downloadText(name,text,type='application/json'){
+ let url=URL.createObjectURL(new Blob([text],{type}));let a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)
+}
+function chatGPTExport(){
+ let sessions=completedSessions().map(s=>({date:s.date,mode:s.mode,code:s.code,notes:s.notes||'',exercises:(s.exercises||[]).map(e=>({name:e.name,type:e.type,sets:e.sets||[],feel:e.feel||'',pain:e.pain||''}))}));
+ return {app:'GYM PRO',version:'27',exportedAt:new Date().toISOString(),mode:db.mode,sessions};
+}
+function readableProgress(){
+ let out=['GYM PRO · RESUMEN DE PROGRESO','Generado: '+new Date().toLocaleString('es-ES'),'Sesiones: '+completedSessions().length,''];
+ completedSessions().forEach(s=>{out.push(new Date(s.date).toLocaleString('es-ES')+' · '+(s.mode==='home'?'Casa':'Gym '+(s.code||'')));(s.exercises||[]).forEach(e=>out.push('- '+e.name+' | '+fmtLoad(e)+' | '+fmtReps(e)+' | '+(e.feel||'—')+' | molestia: '+(e.pain||'—')));if(s.notes)out.push('Notas: '+s.notes);out.push('')});return out.join('\n')
+}
+$('#exportChatGPT').onclick=()=>downloadText('GYM_PRO_para_ChatGPT_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(chatGPTExport(),null,2));
+$('#exportSummary').onclick=()=>downloadText('GYM_PRO_resumen_'+new Date().toISOString().slice(0,10)+'.txt',readableProgress(),'text/plain;charset=utf-8');
 $('#exportBtn').onclick=()=>{let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='GYM_PRO_copia_'+new Date().toISOString().slice(0,10)+'.json';a.click()};$('#importFile').onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{db=JSON.parse(r.result);save();refreshTop();renderCal();renderHistory();renderLibrary();alert('Copia importada.')}catch{alert('Archivo no válido')}};r.readAsText(f)};
 refreshTop();renderLibrary();renderHistory();initSyncUI();
 </script><div id="netState">● Online</div>
 <script>
 (()=>{
  const el=document.getElementById('netState');
- function paint(){const on=navigator.onLine;el.textContent=on?'● Online':'● Sin conexión · guardado local';el.classList.toggle('offline',!on);if(on&&typeof syncNow==='function'&&window.syncCfg&&syncCfg.auto&&syncCfg.url)setTimeout(()=>syncNow(false),900)}
+ function paint(){const on=navigator.onLine;el.textContent=on?'● Online':'● Sin conexión · guardado local';el.classList.toggle('offline',!on);if(on&&typeof syncNow==='function'&&window.syncCfg&&syncCfg.auto&&syncCfg.url)setTimeout(()=>syncNow(false),1500)}
  addEventListener('online',paint);addEventListener('offline',paint);paint();
  if('serviceWorker' in navigator){
    navigator.serviceWorker.register('./sw.js').then(reg=>{
