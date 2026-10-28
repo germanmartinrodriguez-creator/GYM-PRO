@@ -1,1 +1,8 @@
-GYM PRO V28 - Preparación para GitHub\nCasa Adaptación / Casa Entrenamiento / Gimnasio.\nAntes de publicar: exportar JSON de datos desde la app actual, verificar sincronización Drive y probar en dispositivos.\nNo se ha modificado el repositorio main.\n
+GYM PRO V28 · actualización de vídeos y rotaciones
+
+Sube a la raíz del repositorio GitHub los archivos de esta carpeta (index.html, sw.js, manifest.webmanifest, iconos).
+No borres datos del navegador ni importes historiales: esta actualización conserva las claves de almacenamiento y la sincronización existente.
+Se añade pullover con mancuerna como primera reserva del pullover del Gimnasio C.
+Se habilita Cambiar ejercicio solo en Gimnasio, con elección de alternativas y vídeos en la ventana.
+No se modifican las rutinas de Casa.
+Nota: falta vídeo elegido para Pallof press (reserva de Plancha progresiva).
