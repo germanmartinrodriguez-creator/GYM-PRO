@@ -1,5 +1,5 @@
-const VERSION="gym-pro-v30-escaleras-20261102";
-const APP=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png"];
+const VERSION="gym-pro-v31-sustituciones-20261102";
+const APP=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png","./media/press_plano.svg","./media/pullover.svg","./media/step_frontal.svg","./media/step_lateral.svg","./media/gemelos.svg","./media/marcha.svg","./media/equilibrio.svg"];
 
 self.addEventListener("install",e=>{
   self.skipWaiting();

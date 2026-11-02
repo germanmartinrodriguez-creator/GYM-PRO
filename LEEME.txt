@@ -1,14 +1,17 @@
-GYM PRO V30 — RESISTENCIA Y CONFIGURACIÓN
+GYM PRO V31 — SUSTITUCIONES Y ESCALERAS
 
-Cambios:
-- Escaleras A/B/C, registro y técnica individual de cada movimiento.
-- Ajustes > Configurar entrenamiento: seleccionar Casa/Gimnasio y día A/B/C; editar, añadir, quitar y reordenar ejercicios.
-- Se conservan registros históricos, vídeos y copia JSON (las ediciones afectan solo a sesiones futuras).
-- Fichas técnicas reforzadas para press plano con mancuernas y pullover con mancuerna.
-- Imágenes externas propuestas para ambos ejercicios: requieren conexión; verificar visualmente en navegador antes de dar por definitivas.
-- No se han añadido vídeos nuevos de escaleras sin verificar que enseñen exactamente la técnica propuesta.
+NOVEDADES:
+- Selector A/B/C visible en modo Gimnasio antes de iniciar.
+- Ajustes > Personalizar tabla: elegir ejercicios de reserva en lugar de editar campos manualmente.
+- Durante una sesión de Casa Entrenamiento o Gimnasio: botón Sustituir ejercicio con opción Solo hoy o Guardar en rutina.
+- Los cambios de rutina se guardan en customPlans; el historial anterior no se reescribe.
+- Escaleras: esquemas ilustrativos locales en las tarjetas y en Técnica; enlaces a búsqueda de vídeos cortos (no son vídeos individuales verificados).
+- Press plano con mancuernas y pullover: imágenes esquemáticas locales para evitar enlaces externos rotos.
+- Imágenes SVG incluidas en carpeta media y caché offline actualizada.
 
-ANTES DE ACTUALIZAR: exporta copia JSON desde tu GYM PRO actual.
-No se ha publicado automáticamente en GitHub. Sustituye los archivos del sitio cuando hayas comprobado la versión.
-
-PRUEBAS: comprobación estática de sintaxis JS; no se ha podido realizar prueba completa en navegador por restricciones del entorno.
+IMPORTANTE:
+1. Exporta tu copia JSON antes de actualizar.
+2. Reemplaza toda la carpeta de la web, incluida media/ y sw.js.
+3. Prueba la versión antes de publicarla definitivamente.
+4. No se ha publicado en GitHub.
+5. Se ha comprobado sintaxis JavaScript; la prueba funcional automatizada en Chromium no fue posible por restricciones de acceso del entorno.
