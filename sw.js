@@ -1,4 +1,4 @@
-const VERSION="gym-pro-v29-20261027";
+const VERSION="gym-pro-v30-escaleras-20261102";
 const APP=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png"];
 
 self.addEventListener("install",e=>{

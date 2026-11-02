@@ -1,8 +1,14 @@
-GYM PRO V28 · actualización de vídeos y rotaciones
+GYM PRO V30 — RESISTENCIA Y CONFIGURACIÓN
 
-Sube a la raíz del repositorio GitHub los archivos de esta carpeta (index.html, sw.js, manifest.webmanifest, iconos).
-No borres datos del navegador ni importes historiales: esta actualización conserva las claves de almacenamiento y la sincronización existente.
-Se añade pullover con mancuerna como primera reserva del pullover del Gimnasio C.
-Se habilita Cambiar ejercicio solo en Gimnasio, con elección de alternativas y vídeos en la ventana.
-No se modifican las rutinas de Casa.
-Nota: falta vídeo elegido para Pallof press (reserva de Plancha progresiva).
+Cambios:
+- Escaleras A/B/C, registro y técnica individual de cada movimiento.
+- Ajustes > Configurar entrenamiento: seleccionar Casa/Gimnasio y día A/B/C; editar, añadir, quitar y reordenar ejercicios.
+- Se conservan registros históricos, vídeos y copia JSON (las ediciones afectan solo a sesiones futuras).
+- Fichas técnicas reforzadas para press plano con mancuernas y pullover con mancuerna.
+- Imágenes externas propuestas para ambos ejercicios: requieren conexión; verificar visualmente en navegador antes de dar por definitivas.
+- No se han añadido vídeos nuevos de escaleras sin verificar que enseñen exactamente la técnica propuesta.
+
+ANTES DE ACTUALIZAR: exporta copia JSON desde tu GYM PRO actual.
+No se ha publicado automáticamente en GitHub. Sustituye los archivos del sitio cuando hayas comprobado la versión.
+
+PRUEBAS: comprobación estática de sintaxis JS; no se ha podido realizar prueba completa en navegador por restricciones del entorno.
